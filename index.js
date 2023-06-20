@@ -1,4 +1,3 @@
-// Put DOM elements into variables
 const myForm = document.querySelector('#my-form');
 const amountInput = document.querySelector('#amount');
 const disInput = document.querySelector('#dis');
@@ -9,107 +8,139 @@ const userList = document.querySelector('#users');
 myForm.addEventListener('submit', onSubmit);
 
 function onSubmit(e) {
-    e.preventDefault();
-    if(amountInput.value === '' || disInput.value === '' || catInput.value === '') {
-        // alert('Please enter all fields');
-       alert("input all fields")
-    
-    }
-        else{
+  e.preventDefault();
+  if (amountInput.value === '' || disInput.value === '' || catInput.value === '') {
+    alert("input all fields");
+  } else {
     let amount = amountInput.value;
     let description = disInput.value;
-    let category = catInput.value;
-    let obj ={
-        amount,
-        description, category
+    let category = catInput.options[catInput.selectedIndex].textContent;
+    let obj = {
+      amount,
+      description,
+      category
+    };
+
+    axios.post("https://crudcrud.com/api/9d5642ba72d84acf8a032bca74cf6f84/objDATA", obj)
+      .then((response) => {
+        console.log(response);
+        createListItem(obj); // Create and append list item
+        clearFields(); // Clear input fields
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  axios.get('https://crudcrud.com/api/9d5642ba72d84acf8a032bca74cf6f84/objDATA')
+    .then((response) => {
+      const users = response.data; // Assuming the response contains an array of user objects
+
+      // Clear the user list
+      userList.innerHTML = '';
+
+      // Iterate over each user and create list items
+      users.forEach((user) => {
+        createListItem(user);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+function createListItem(user) {
+  const li = document.createElement('li');
+  li.className = 'list-group-item';
+  li.appendChild(document.createTextNode(`${user.category} => ${user.description} || ${user.amount}`));
+
+  // Create delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'btn btn-danger btn-sm float-end';
+  deleteBtn.appendChild(document.createTextNode('Delete'));
+
+  // Create edit button
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn btn-warning btn-sm float-end';
+  editBtn.appendChild(document.createTextNode('Edit'));
+
+  // Append buttons to list item
+  li.appendChild(deleteBtn);
+  li.appendChild(editBtn);
+
+  // Append list item to user list
+  userList.appendChild(li);
+
+  // Delete button click event handler
+  deleteBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const userId = user._id;
+    axios.delete(`https://crudcrud.com/api/9d5642ba72d84acf8a032bca74cf6f84/objDATA/${userId}`)
+      .then((response) => {
+        console.log(response);
+        li.remove();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  // Edit button click event handler
+  editBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const userId = user._id;
+    amountInput.value = user.amount;
+    disInput.value = user.description;
+    catInput.selectedIndex = user.category;
+
+    li.remove();
+    performUpdate();
+
+    function performUpdate() {
+      const updatedamount = amountInput.value;
+      const updateddiscription = disInput.value;
+      const updatedcategory = catInput.selectedIndex;
+
+      // Update the user object
+      const updatedUser = {
+        _id: userId,
+        amount: updatedamount,
+        discription: updateddiscription,
+        category: updatedcategory
+      };
+
+      // Send a PUT request to the CRUD API to update the user
+      axios.put(`https://crudcrud.com/api/9d5642ba72d84acf8a032bca74cf6f84/objDATA/${userId}`, updatedUser)
+        .then((response) => {
+          // Handle successful update
+          console.log(response);
+
+          // Update the list item text with the updated values
+          li.firstChild.textContent = `${updatedamount} => ${updateddiscription}  => ${updatedcategory}`;
+
+          clearFields(); // Clear input fields
+        })
+        .catch((error) => {
+          // Handle error during update
+          console.log(error);
+        });
+      axios.delete(`https://crudcrud.com/api/9d5642ba72d84acf8a032bca74cf6f84/objDATA/${userId}`)
+        .then((response) => {
+          console.log(response);
+          li.remove();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-
-
-    // storing the items 
-    const existingData = JSON.parse(localStorage.getItem(amount)) || [];
-    existingData.push(obj);
-
-    localStorage.setItem(amount, JSON.stringify(existingData));
-
-    var lii = document.createElement('li');
-
-    // Add class
-    lii.className = 'list-group-item';
-    // Add text node with input value
-    lii.appendChild(document.createTextNode("Amount="+amountInput.value + ' ' + '||'+" "));
-    lii.appendChild(document.createTextNode(disInput.value + ' ' + '||'+" "));
-    lii.appendChild(document.createTextNode(catInput.options[catInput.selectedIndex].textContent+ ' '));
-    userList.appendChild(lii);
-
-    // Create del button element
-    var deleteBtn = document.createElement('button');
-
-    // Add classes to del button
-    deleteBtn.className = 'btn btn-danger btn-sm float-end';
-
-    // Append text node
-    deleteBtn.appendChild(document.createTextNode('Delete'));
-
-    // Append del button to li
-    lii.appendChild(deleteBtn);
-
-    // Append li to list
-    userList.appendChild(lii);
-
-    // Create del button element
-    var editBtn = document.createElement('button');
-
-    // Add classes to del button
-    editBtn.className = 'btn btn-warning  btn-sm float-end';
-
-    // Append text node
-    editBtn.appendChild(document.createTextNode('Edit'));
-
-    // Append del button to li
-    lii.appendChild(editBtn);
-
-    // Append li to list
-    userList.appendChild(lii);
-
-
-  deleteBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-
-    const existingData = JSON.parse(localStorage.getItem(amount)) || [];
-
-    existingData.splice(existingData.findIndex(itemm => itemm.amount === amount && itemm.description === dis && itemm.category === cat), 1);
-      localStorage.setItem(amount, JSON.stringify(existingData));
-      if(existingData.length === 0) {
-        localStorage.removeItem(amount);
-      }
-
-    lii.remove();
   });
-  
-   editBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-   
- // retrieve the name and email from the clicked list item and display them in the form fields
- amountInput.value = amount;
- disInput.value = dis;
- catInput.value = cat;
- 
- const existingData = JSON.parse(localStorage.getItem(amount)) || [];
+}
 
- existingData.splice(existingData.findIndex(itemm => itemm.amount === amount && itemm.description === dis  && itemm.category === cat), 1);
-      localStorage.setItem(amount, JSON.stringify(existingData));
-      if(existingData.length === 0) {
-        localStorage.removeItem(amount);
-      }
-
- // remove the list item from the DOM
- lii.remove();
-    
-  });
-
-  // clear the fields 
-  amountInput.value ='' ;
+function clearFields() {
+  amountInput.value = '';
   disInput.value = '';
   catInput.selectedIndex = 0;
-  }
 }

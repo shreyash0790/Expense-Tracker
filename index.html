@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Expense tracker app</title>
+    <title>MY Restaurant  </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   </head>
   <body class="text-center">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#"><b>Finance Buddy</b> </a>
+          <a class="navbar-brand" href="#"><b>Eat && Dine Restaurant </b> </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -36,14 +36,14 @@
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
               <form id="my-form">
                 <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                  <h1 class="container text-center my-3 text-primary">Enter your Expenses</h1>
+                  <h1 class="container text-center my-3 text-primary">Enter oder Details</h1>
                   
                 </div>
       
                 <!-- amount -->
                 <div class="form-outline mb-4">
                   <input type="number" id="amount" class="form-control form-control-lg"
-                    placeholder="Enter Amount" />
+                    placeholder="Enter Oder Amount" />
                   <label class="form-label" for="amount"></label>
                 </div>
       
@@ -57,14 +57,12 @@
                 <div class="form-floating my-2">
                     <select class="form-select" id="cat" aria-label="Floating label select example">
                       <option selected></option>
-                      <option value="1">Travel</option>
-                      <option value="2">Rent </option>
-                      <option value="3">Food</option>
-                      <option value="1">Luxery</option>
-                      <option value="2">Essentails</option>
-                      <option value="3">Others</option>
+                      <option value="1">Table 1</option>
+                      <option value="2">Table 2 </option>
+                      <option value="3">Table 3 </option>
+                      
                     </select>
-                    <label for="cat"> Select category </label>
+                    <label for="cat"> Choose Table </label>
                   </div>
       
                 
@@ -72,18 +70,18 @@
       
                 <div class="text-center text-lg-start mt-4 pt-2">
                   <button type="submit" class="btn btn-primary btn-lg "
-                    style="padding-left: 2.5rem; padding-right: 2.5rem;">Add Expense</button>
+                    style="padding-left: 2.5rem; padding-right: 2.5rem;">Add Oder</button>
                 </div>
-                <div class="text-center text-sm-start mt-4 pt-2">
-                    <button type="submit" class="btn btn-info btn-sm"
-                      style="padding-left: 2.5rem; padding-right: 2.5rem;">Expense list</button>
-                  </div>
+               
       
               </form>
+              <div class="list-container">
+              <h3 class="list-title fw-bold text-primary">Order List</h3>
               <ul class="list-group" id="users">
                 <li class="list-group-item"></li>
                 
               </ul>
+            </div>
             </div>
           </div>
         </div>
@@ -91,5 +89,6 @@
         </div>
       </section>
     <script src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   </body>
 </html>
