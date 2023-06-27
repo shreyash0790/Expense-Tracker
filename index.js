@@ -267,8 +267,7 @@ function createListItem(user) {
         // Handle successful update
         console.log(response);
 
-        // Update the list item text with the updated values
-        li.firstChild.textContent = `${updatedamount} => ${updateddiscription}  => ${updatedcategory}`;
+        
 
         clearFields(); // Clear input fields
       } catch (error) {
