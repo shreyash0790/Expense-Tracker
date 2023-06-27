@@ -266,10 +266,6 @@ function createListItem(user) {
         const response = await axios.put(`https://crudcrud.com/api/77c325310bc243249b4f9681037937d6/${userId}`, updatedUser);
         // Handle successful update
         console.log(response);
-
-        
-
-        clearFields(); // Clear input fields
       } catch (error) {
         // Handle error during update
         console.log(error);
