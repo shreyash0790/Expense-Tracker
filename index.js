@@ -264,17 +264,14 @@ function createListItem(user) {
       try {
         // Send a PUT request to the CRUD API to update the user
         const response = await axios.put(`https://crudcrud.com/api/77c325310bc243249b4f9681037937d6/${userId}`, updatedUser);
-        // Handle successful update
         console.log(response);
       } catch (error) {
-        // Handle error during update
         console.log(error);
       }
 
       try {
         const response = await axios.delete(`https://crudcrud.com/api/77c325310bc243249b4f9681037937d6/objDATA/${userId}`);
         console.log(response);
-        li.remove();
       } catch (error) {
         console.log(error);
       }
